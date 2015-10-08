@@ -1,0 +1,4 @@
+suites:
+    default_suite:
+        namespace: CubicMushroom\Hexagonal
+        psr4_prefix: CubicMushroom\Hexagonal
