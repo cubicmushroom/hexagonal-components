@@ -26,5 +26,10 @@
     "gulp": "^3.9.0",
     "gulp-notify": "^2.2.0",
     "gulp-phpspec": "^0.5.3"
+  },
+  "jshintConfig": {
+    "globals": {
+      "require": false
+    }
   }
 }
