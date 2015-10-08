@@ -1,0 +1,22 @@
+{
+    "name": "cubicmushroom/hexagonal-components",
+    "description": "Useful elements for implementing hexagonal architecture",
+    "type": "library",
+    "license": "ISC",
+    "authors": [
+        {
+            "name": "Toby Griffiths",
+            "email": "toby@cubicmushroom.co.uk"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {},
+    "require-dev": {
+        "phpspec/phpspec": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "CubicMushroom\\Heaxgonal\\": "src/"
+        }
+    }
+}
