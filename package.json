@@ -24,10 +24,7 @@
   "homepage": "https://github.com/cubicmushroom/hexagonal-components",
   "devDependencies": {
     "gulp": "^3.9.0",
-    "gulp-notify": "^2.2.0",
-    "gulp-phpspec": "^0.5.3",
-    "shelljs": "^0.5.3",
-    "yargs": "^3.27.0"
+    "gulp-cm-phpspec-tasks": "^1.0.0"
   },
   "jshintConfig": {
     "globals": {

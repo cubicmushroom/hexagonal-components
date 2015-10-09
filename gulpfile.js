@@ -1,4 +1,6 @@
 var gulp         = require('gulp'),
-    phpspecTasks = require('./gulp/phpspec-tasks');
+    phpspecTasks = require('gulp-cm-phpspec-tasks');
 
-phpspecTasks.addTasks(gulp, 'CubicMushroom\\Hexagonal\\');
+var phpspecNamespace = 'CubicMushroom\\Hexagonal\\';
+
+phpspecTasks.addTasks(gulp, phpspecNamespace);
