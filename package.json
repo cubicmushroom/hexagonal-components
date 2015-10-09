@@ -1,32 +1,32 @@
 {
-  "name": "hexagonal-components",
-  "version": "1.0.0",
-  "description": "Useful elements for implementing hexagonal architecture",
-  "main": "gulp.js",
-  "scripts": {
+  "name"           : "hexagonal-components",
+  "version"        : "1.0.0",
+  "description"    : "Useful elements for implementing hexagonal architecture",
+  "main"           : "gulp.js",
+  "scripts"        : {
     "test": "gulp test"
   },
-  "repository": {
+  "repository"     : {
     "type": "git",
-    "url": "https://github.com/cubicmushroom/hexagonal-components.git"
+    "url" : "https://github.com/cubicmushroom/hexagonal-components.git"
   },
-  "keywords": [
+  "keywords"       : [
     "hexagonal",
     "architecture",
     "command",
     "bus"
   ],
-  "author": "Toby Griffiths <toby@cubicmushroom.co.uk>",
-  "license": "ISC",
-  "bugs": {
+  "author"         : "Toby Griffiths <toby@cubicmushroom.co.uk>",
+  "license"        : "ISC",
+  "bugs"           : {
     "url": "https://github.com/cubicmushroom/hexagonal-components/issues"
   },
-  "homepage": "https://github.com/cubicmushroom/hexagonal-components",
+  "homepage"       : "https://github.com/cubicmushroom/hexagonal-components",
   "devDependencies": {
-    "gulp": "^3.9.0",
+    "gulp"                 : "^3.9.0",
     "gulp-cm-phpspec-tasks": "^1.0.0"
   },
-  "jshintConfig": {
+  "jshintConfig"   : {
     "globals": {
       "require": false
     }

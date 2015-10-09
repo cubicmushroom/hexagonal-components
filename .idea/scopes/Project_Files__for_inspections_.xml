@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Project Files (for inspections)" pattern="file[hexagonal-components]:*/&amp;&amp;!file[hexagonal-components]:vendor//*&amp;&amp;!file[hexagonal-components]:node_modules//*" />
+</component>
