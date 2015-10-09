@@ -6,23 +6,6 @@ var gulp    = require('gulp'),
 
 var namespace = 'CubicMushroom\\Hexagonal\\';
 
-//console.dir(yargs);
-
-yargs.options({
-  'c': {
-    alias   : 'class',
-    describe: 'Class to describe',
-    type    : 'string', /* array | boolean | string */
-    nargs   : 1
-  }
-});
-if (!yargs.argv.h) {
-  yargs.demand('c', 'Class (-c, --class) is required');
-}
-
-var argv = yargs.argv;
-
-
 // -----------------------------------------------------------------------------------------------------------------
 // PHPSpec Tasks
 // -----------------------------------------------------------------------------------------------------------------
@@ -33,12 +16,25 @@ var srcGlob = 'src/**/*.php';
 gulp.task('desc', function () {
   var className;
 
-  if (argv.h || !argv.c) {
+  yargs.options({
+    'c': {
+      alias   : 'class',
+      describe: 'Class to describe',
+      type    : 'string', /* array | boolean | string */
+      nargs   : 1
+    }
+  });
+
+  if (!yargs.argv.h) {
+    yargs.demand('c', 'Class (-c, --class) is required');
+  }
+
+  if (yargs.argv.h || !yargs.argv.c) {
     yargs.showHelp();
     return;
   }
 
-  className = namespace.replace(/\\/g, '/') + argv.c;
+  className = namespace.replace(/\\/g, '/') + yargs.argv.c;
   shell.exec('phpspec desc ' + className);
 });
 
