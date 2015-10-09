@@ -1,7 +1,8 @@
 var gulp    = require('gulp'),
     notify  = require('gulp-notify'),
     phpspec = require('gulp-phpspec'),
-    yargs   = require('yargs');
+    yargs   = require('yargs'),
+    shell   = require("shelljs");
 
 var namespace = 'CubicMushroom\\Hexagonal\\';
 
@@ -30,12 +31,15 @@ var phpspecGlob = 'spec/**/*Spec.php';
 var srcGlob = 'src/**/*.php';
 
 gulp.task('desc', function () {
+  var className;
+
   if (argv.h || !argv.c) {
     yargs.showHelp();
     return;
   }
 
-
+  className = namespace.replace(/\\/g, '/') + argv.c;
+  shell.exec('phpspec desc ' + className);
 });
 
 // phpspec
