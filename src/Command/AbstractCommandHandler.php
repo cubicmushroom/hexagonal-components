@@ -4,7 +4,6 @@ namespace CubicMushroom\Hexagonal\Command;
 
 use CubicMushroom\Hexagonal\Event\CommandFailedEventInterface;
 use CubicMushroom\Hexagonal\Event\CommandSucceededEventInterface;
-use CubicMushroom\Hexagonal\Exception\Command\InvalidCommandException;
 use League\Event\EmitterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -13,7 +12,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @package CubicMushroom\Hexagonal
  *
- * @see \spec\CubicMushroom\Hexagonal\Command\AbstractCommandHandlerSpec
+ * @see     \spec\CubicMushroom\Hexagonal\Command\AbstractCommandHandlerSpec
  */
 abstract class AbstractCommandHandler implements CommandHandlerInterface
 {
@@ -35,7 +34,7 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
         $abstractCommandHandler = new static();
 
         $abstractCommandHandler->validator = $validator;
-        $abstractCommandHandler->emitter = $emitter;
+        $abstractCommandHandler->emitter   = $emitter;
 
         return $abstractCommandHandler;
     }
@@ -76,16 +75,6 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
 
         $event = $this->getSuccessEvent($command);
         $this->emit($event);
-    }
-
-
-    protected function checkCommandType(CommandInterface $command)
-    {
-        $commandClass = $this->getCommandClass();
-
-        if (!get_class($command) !== $commandClass) {
-            throw new InvalidCommandException("Command is not of '{$commandClass}' class");
-        }
     }
 
 
