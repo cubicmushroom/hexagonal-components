@@ -4,6 +4,7 @@ namespace CubicMushroom\Hexagonal\Command;
 
 use CubicMushroom\Hexagonal\Event\CommandFailedEventInterface;
 use CubicMushroom\Hexagonal\Event\CommandSucceededEventInterface;
+use CubicMushroom\Hexagonal\Exception\Command\InvalidCommandException;
 use League\Event\EmitterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -67,6 +68,8 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
      */
     final public function handle(CommandInterface $command)
     {
+        $this->checkCommandType($command);
+
         $this->validator->validate($command);
 
         try {
@@ -83,6 +86,30 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     }
 
 
+    protected function checkCommandType(CommandInterface $command)
+    {
+        $commandClass = $this->getCommandClass();
+
+        if (!get_class($command) !== $commandClass) {
+            throw new InvalidCommandException("Command is not of '{$commandClass}' class");
+        }
+    }
+
+
+    /**
+     * Should return the class of the command that the handler handles
+     *
+     * @return string
+     */
+    abstract protected function getCommandClass();
+
+
+    /**
+     * @param $command
+     */
+    abstract protected function _handle($command);
+
+
     /**
      * @param CommandInterface $command
      *
@@ -97,10 +124,4 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
      * @return CommandFailedEventInterface
      */
     abstract protected function getFailureEvent(\Exception $exception);
-
-
-    /**
-     * @param $command
-     */
-    abstract protected function _handle($command);
 }

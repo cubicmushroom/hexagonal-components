@@ -5,9 +5,12 @@ namespace spec\CubicMushroom\Hexagonal\Command {
     use CubicMushroom\Hexagonal\Command\AbstractCommandHandler;
     use CubicMushroom\Hexagonal\Command\CommandHandlerInterface;
     use CubicMushroom\Hexagonal\Command\CommandInterface;
+    use CubicMushroom\Hexagonal\Command\TestCorrectCommand;
     use CubicMushroom\Hexagonal\Command\TestAbstractCommandHandler;
     use CubicMushroom\Hexagonal\Command\TestAbstractCommandHandlerFailedEvent;
     use CubicMushroom\Hexagonal\Command\TestAbstractCommandHandlerSucceededEvent;
+    use CubicMushroom\Hexagonal\Command\TestIncorrectCommand;
+    use CubicMushroom\Hexagonal\Exception\Command\InvalidCommandException;
     use League\Event\EmitterInterface;
     use PhpSpec\ObjectBehavior;
     use Prophecy\Argument;
@@ -58,11 +61,30 @@ namespace spec\CubicMushroom\Hexagonal\Command {
         /**
          * @uses AbstractCommandHandler::handle()
          */
+        function it_should_be_ok_with_its_own_command_type() {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->handle(new TestCorrectCommand);
+        }
+
+
+        /**
+         * @uses AbstractCommandHandler::handle()
+         */
+        function it_should_throw_an_exception_for_any_other_command_type() {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->shouldThrow(InvalidCommandException::class)->during('handle', [new TestIncorrectCommand]);
+        }
+
+
+        /**
+         * @uses AbstractCommandHandler::handle()
+         */
         function it_should_validate_the_command(
             /** @noinspection PhpDocSignatureInspection */
-            CommandInterface $command,
             ValidatorInterface $validator
         ) {
+            $command = new TestCorrectCommand;
+
             /** @noinspection PhpUndefinedMethodInspection */
             $this->handle($command);
 
@@ -76,12 +98,11 @@ namespace spec\CubicMushroom\Hexagonal\Command {
          */
         function it_should_emit_an_event_on_success(
             /** @noinspection PhpDocSignatureInspection */
-            CommandInterface $command,
             EmitterInterface $emitter
         ) {
 
             /** @noinspection PhpUndefinedMethodInspection */
-            $this->handle($command);
+            $this->handle(new TestCorrectCommand);
 
             /** @noinspection PhpUndefinedMethodInspection */
             $emitter->emit(Argument::type(TestAbstractCommandHandlerSucceededEvent::class))->shouldHaveBeenCalled();
@@ -158,6 +179,31 @@ namespace CubicMushroom\Hexagonal\Command {
 
 
         /**
+         * Should return the class of the command that the handler handles
+         *
+         * @return string
+         */
+        protected function getCommandClass()
+        {
+            return TestCorrectCommand::class;
+        }
+
+
+        /**
+         *
+         * @param $command
+         *
+         * @throws \Exception
+         */
+        protected function _handle($command)
+        {
+            if ($this->shouldFail) {
+                throw new \Exception('I am supposed to fail for this test');
+            }
+        }
+
+
+        /**
          * @param CommandInterface $command
          *
          * @return CommandSucceededEventInterface
@@ -177,20 +223,14 @@ namespace CubicMushroom\Hexagonal\Command {
         {
             return new TestAbstractCommandHandlerFailedEvent('TestAbstractCommandHandlerFailure');
         }
+    }
 
+    class TestCorrectCommand implements CommandInterface
+    {
+    }
 
-        /**
-         *
-         * @param $command
-         *
-         * @throws \Exception
-         */
-        protected function _handle($command)
-        {
-            if ($this->shouldFail) {
-                throw new \Exception('I am supposed to fail for this test');
-            }
-        }
+    class TestIncorrectCommand implements CommandInterface
+    {
     }
 
     /**
