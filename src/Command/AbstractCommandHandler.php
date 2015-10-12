@@ -17,6 +17,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 abstract class AbstractCommandHandler implements CommandHandlerInterface
 {
+    use CommandValidatorTrait;
+    use EventHelperTrait;
+
     // -----------------------------------------------------------------------------------------------------------------
     // Static factory methods
     // -----------------------------------------------------------------------------------------------------------------
@@ -40,15 +43,6 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     // -----------------------------------------------------------------------------------------------------------------
     // Properties
     // -----------------------------------------------------------------------------------------------------------------
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
-     * @var EmitterInterface
-     */
-    protected $emitter;
 
 
     /**
@@ -64,25 +58,24 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
      *
      * @param CommandInterface $command
      *
+     * @return void
+     *
      * @throws \Exception if _handler() throws an error
      */
     final public function handle(CommandInterface $command)
     {
-        $this->checkCommandType($command);
-
-        $this->validator->validate($command);
+        $this->validateCommand($command);
 
         try {
             $this->_handle($command);
         } catch (\Exception $exception) {
             $failureEvent = $this->getFailureEvent($exception);
-            $this->emitter->emit($failureEvent);
+            $this->emit($failureEvent);
             throw $exception;
         }
 
         $event = $this->getSuccessEvent($command);
-
-        $this->emitter->emit($event);
+        $this->emit($event);
     }
 
 
@@ -94,14 +87,6 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
             throw new InvalidCommandException("Command is not of '{$commandClass}' class");
         }
     }
-
-
-    /**
-     * Should return the class of the command that the handler handles
-     *
-     * @return string
-     */
-    abstract protected function getCommandClass();
 
 
     /**
