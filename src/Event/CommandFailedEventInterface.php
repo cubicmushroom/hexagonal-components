@@ -13,6 +13,6 @@ namespace CubicMushroom\Hexagonal\Event;
  *
  * @package CubicMushroom\Hexagonal
  */
-interface CommandFailedEventInterface
+interface CommandFailedEventInterface extends EventInterface
 {
 }
