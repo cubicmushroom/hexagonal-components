@@ -105,9 +105,9 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
 
 
     /**
-     * @param $command
+     * @param CommandInterface $command
      */
-    abstract protected function _handle($command);
+    abstract protected function _handle(CommandInterface $command);
 
 
     /**
@@ -115,7 +115,7 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
      *
      * @return CommandSucceededEventInterface
      */
-    abstract protected function getSuccessEvent($command);
+    abstract protected function getSuccessEvent(CommandInterface $command);
 
 
     /**
