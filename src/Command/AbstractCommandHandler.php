@@ -43,18 +43,18 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     /**
      * @var ValidatorInterface
      */
-    private $validator;
+    protected $validator;
 
     /**
      * @var EmitterInterface
      */
-    private $emitter;
+    protected $emitter;
 
 
     /**
      * Use factory methods to create
      */
-    private function __construct()
+    protected function __construct()
     {
     }
 
