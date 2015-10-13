@@ -2,6 +2,7 @@
 
 namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
 
+    use CubicMushroom\Hexagonal\Domain\Generic\ModelIdInterface;
     use PhpSpec\Exception\Example\ErrorException;
     use PhpSpec\ObjectBehavior;
     use Prophecy\Argument;
@@ -15,6 +16,11 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
      */
     class ModelIdTestSpec extends ObjectBehavior
     {
+
+        function it_should_implement_model_id_interface()
+        {
+            $this->beAnInstanceOf(ModelIdInterface::class);
+        }
 
         function it_should_be_possible_to_construct_with_an_existing_value()
         {
