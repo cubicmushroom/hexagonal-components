@@ -16,7 +16,15 @@ namespace CubicMushroom\Hexagonal\Domain\Generic;
 interface ModelInterface
 {
     /**
-     * @return ModelId
+     * @return ModelIdInterface
      */
-    public function getId();
+    public function id();
+
+
+    /**
+     * @param ModelIdInterface $id
+     *
+     * @return $this
+     */
+    public function assignId(ModelIdInterface $id);
 }
