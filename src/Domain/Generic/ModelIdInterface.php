@@ -15,5 +15,8 @@ namespace CubicMushroom\Hexagonal\Domain\Generic;
  */
 interface ModelIdInterface
 {
-
+    /**
+     * @return mixed
+     */
+    public function getValue();
 }

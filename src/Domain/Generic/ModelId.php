@@ -13,7 +13,7 @@ namespace CubicMushroom\Hexagonal\Domain\Generic;
  *
  * @package CubicMushroom\Hexagonal
  */
-abstract class ModelId
+abstract class ModelId implements ModelIdInterface
 {
     // -----------------------------------------------------------------------------------------------------------------
     // Properties
@@ -30,7 +30,7 @@ abstract class ModelId
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @param $value
+     * @param mixed $value
      */
     public function __construct($value)
     {
@@ -58,13 +58,13 @@ abstract class ModelId
      *
      * $id can be either an integer, ProductId or Product
      *
-     * @param string|ModelId|ModelInterface $id
+     * @param mixed|ModelIdInterface|ModelInterface $id
      *
      * @return bool
      */
     public function equals($id)
     {
-        if ($id instanceof ModelId) {
+        if ($id instanceof ModelIdInterface) {
 
             return ($id->getValue() === $this->value);
         } elseif (is_a($id, $this->getModelClass(), true)) {
@@ -87,7 +87,7 @@ abstract class ModelId
     // -----------------------------------------------------------------------------------------------------------------
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getValue()
     {
