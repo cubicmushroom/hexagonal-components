@@ -9,6 +9,7 @@
 namespace CubicMushroom\Hexagonal\Domain\Generic;
 
 use CubicMushroom\Hexagonal\Exception\Domain\Generic\IdAlreadyAssignedException;
+use CubicMushroom\Hexagonal\Exception\Domain\Generic\InvalidIdException;
 
 /**
  * Class Model
@@ -46,9 +47,23 @@ abstract class Model implements ModelInterface
             throw new IdAlreadyAssignedException("\$id of value {$this->id->getValue()} already assigned");
         }
 
+        $idClass = $this->getIdClass();
+        if (!is_a($id, $idClass)){
+            $actualClass = get_class($id);
+            throw new InvalidIdException("\$id must be an instance of {$idClass}.  {$actualClass} given.");
+        }
+
+
         $this->id = $id;
 
         return $this;
     }
 
+
+    /**
+     * Should return the class of the model's $id field value object
+     *
+     * @return string
+     */
+    abstract protected function getIdClass();
 }

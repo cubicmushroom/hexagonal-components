@@ -2,12 +2,14 @@
 
 namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
 
+    use CubicMushroom\Hexagonal\Domain\Generic\CorrectId;
     use CubicMushroom\Hexagonal\Domain\Generic\Model;
     use CubicMushroom\Hexagonal\Domain\Generic\ModelId;
     use CubicMushroom\Hexagonal\Domain\Generic\ModelInterface;
     use CubicMushroom\Hexagonal\Domain\Generic\ModelTest;
+    use CubicMushroom\Hexagonal\Domain\Generic\WrongId;
     use CubicMushroom\Hexagonal\Exception\Domain\Generic\IdAlreadyAssignedException;
-    use PhpSpec\Exception\Example\PendingException;
+    use CubicMushroom\Hexagonal\Exception\Domain\Generic\InvalidIdException;
     use PhpSpec\ObjectBehavior;
     use Prophecy\Argument;
 
@@ -21,7 +23,7 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
         protected $id;
 
 
-        function let(ModelId $id)
+        function let(CorrectId $id)
         {
             $id->getValue()->willReturn(self::ID);
         }
@@ -44,8 +46,10 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
          * @uses Model::assignId()
          * @uses Model::id()
          */
-        function it_should_allow_id_to_be_assigned_only_once(ModelId $id)
-        {
+        function it_should_allow_id_to_be_assigned_only_once(
+            /** @noinspection PhpDocSignatureInspection */
+            CorrectId $id
+        ) {
             /** @noinspection PhpUndefinedMethodInspection */
             $this->assignId($id)->shouldReturnAnInstanceOf(Model::class);
             /** @noinspection PhpUndefinedMethodInspection */
@@ -57,9 +61,14 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
         }
 
 
-        function it_should_check_the_id_type_for_the_extended_class()
-        {
-            throw new PendingException('Add check');
+        /**
+         * @uses Model::assignId()
+         */
+        function it_should_check_the_id_type_for_the_extended_class(
+            /** @noinspection PhpDocSignatureInspection */
+            WrongId $wrongId
+        ) {
+            $this->shouldThrow(InvalidIdException::class)->during('assignId', [$wrongId]);
         }
     }
 }
@@ -67,6 +76,23 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
 namespace CubicMushroom\Hexagonal\Domain\Generic {
 
     class ModelTest extends Model
+    {
+        /**
+         * Should return the class of the model's $id field value object
+         *
+         * @return string
+         */
+        protected function getIdClass()
+        {
+            return CorrectId::class;
+        }
+    }
+
+    class CorrectId extends ModelId
+    {
+    }
+
+    class WrongId extends ModelId
     {
     }
 }
