@@ -2,6 +2,7 @@
 
 namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
 
+    use PhpSpec\Exception\Example\ErrorException;
     use PhpSpec\ObjectBehavior;
     use Prophecy\Argument;
 
@@ -19,6 +20,12 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
         {
             /** @noinspection PhpMethodParametersCountMismatchInspection */
             $this->beConstructedWith('123');
+        }
+
+
+        function it_should_not_be_possible_to_construct_withuit_a_value()
+        {
+            $this->shouldThrow(ErrorException::class)->during('__construct', []);
         }
     }
 }
