@@ -17,19 +17,21 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
     class ModelIdTestSpec extends ObjectBehavior
     {
 
-        function it_should_implement_model_id_interface()
-        {
-            $this->beAnInstanceOf(ModelIdInterface::class);
-        }
 
-        function it_should_be_possible_to_construct_with_an_existing_value()
+        function let()
         {
             /** @noinspection PhpMethodParametersCountMismatchInspection */
             $this->beConstructedWith('123');
         }
 
+        function it_should_implement_model_id_interface()
+        {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->shouldBeAnInstanceOf(ModelIdInterface::class);
+        }
 
-        function it_should_not_be_possible_to_construct_withuit_a_value()
+
+        function it_should_not_be_possible_to_construct_without_a_value()
         {
             $this->shouldThrow(ErrorException::class)->during('__construct', []);
         }
