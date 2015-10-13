@@ -12,6 +12,8 @@ namespace CubicMushroom\Hexagonal\Domain\Generic;
  * Class ModelId
  *
  * @package CubicMushroom\Hexagonal
+ *
+ * @see \spec\CubicMushroom\Hexagonal\Domain\Generic\ModelIdTestSpec
  */
 abstract class ModelId implements ModelIdInterface
 {
