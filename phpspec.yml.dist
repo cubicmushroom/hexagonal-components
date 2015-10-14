@@ -1,4 +1,4 @@
-format: pretty
+formatter.name: pretty
 suites:
     default_suite:
         namespace: CubicMushroom\Hexagonal
