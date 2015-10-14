@@ -96,7 +96,11 @@ namespace spec\CubicMushroom\Hexagonal\Command {
             $this->shouldThrow(InvalidCommandException::class)->during('handle', [new TestIncorrectCommand]);
 
             /** @noinspection PhpUndefinedMethodInspection */
-            $logger->error(Argument::containingString(ltrim(self::TEST_CLASS, '\\').' cannot handle commands of type '))
+            $logger->error(
+                Argument::containingString(
+                    ltrim(self::TEST_CLASS, '\\').' cannot handle commands of type '.TestIncorrectCommand::class
+                )
+            )
                    ->shouldHaveBeenCalled();
         }
 
@@ -139,7 +143,7 @@ namespace spec\CubicMushroom\Hexagonal\Command {
             EmitterInterface $emitter,
             LoggerInterface $logger
         ) {
-            $command           = new TestCorrectCommand;
+            $command = new TestCorrectCommand;
             $expectedException = new \Exception('I am supposed to fail for this test');
 
             $this->beConstructedThrough('createToFail', [$validator, $emitter, $logger]);
