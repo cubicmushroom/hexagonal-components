@@ -121,6 +121,21 @@ namespace spec\CubicMushroom\Hexagonal\Command {
         /**
          * @uses AbstractCommandHandler::handle()
          */
+        function it_should_call_the_handle_method()
+        {
+            $command = new TestCorrectCommand;
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->handle($command);
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->shouldHaveHandleBeenCalled();
+        }
+
+
+        /**
+         * @uses AbstractCommandHandler::handle()
+         */
         function it_should_emit_an_event_on_success(
             /** @noinspection PhpDocSignatureInspection */
             EmitterInterface $emitter
@@ -170,12 +185,12 @@ namespace CubicMushroom\Hexagonal\Command {
      * Test class used to test the functionality of the AbstractCommandHandler class
      *
      * IMPORTANT: Do not implement any methods in this class, other than the abstract ones from AbstractCommandHandler
+     *            The only excpetion to this is methods used to test the object's state under test
      *
      * @package CubicMushroom\Hexagonal
      */
     class TestAbstractCommandHandler extends AbstractCommandHandler
     {
-
         /**
          * Custom builder used to pass in $shouldFail flag
          *
@@ -195,7 +210,6 @@ namespace CubicMushroom\Hexagonal\Command {
 
             return $handler;
         }
-
 
         /**
          * Custom builder used to inject logger service
@@ -227,6 +241,12 @@ namespace CubicMushroom\Hexagonal\Command {
 
 
         /**
+         * @var bool
+         */
+        protected $hasHandlerBeenCalled = false;
+
+
+        /**
          * Should return the class of the command that the handler handles
          *
          * @return string
@@ -248,6 +268,8 @@ namespace CubicMushroom\Hexagonal\Command {
             if ($this->shouldFail) {
                 throw new \Exception('I am supposed to fail for this test');
             }
+            
+            $this->hasHandlerBeenCalled = true;
         }
 
 
@@ -270,6 +292,19 @@ namespace CubicMushroom\Hexagonal\Command {
         protected function getFailureEvent(\Exception $exception)
         {
             return new TestAbstractCommandHandlerFailedEvent('TestAbstractCommandHandlerFailure');
+        }
+
+
+        // -----------------------------------------------------------------------------------------------------------------
+        // State test methods
+        // -----------------------------------------------------------------------------------------------------------------
+
+        /**
+         * @return bool
+         */
+        public function hasHandleBeenCalled()
+        {
+            return $this->hasHandlerBeenCalled;
         }
     }
 
