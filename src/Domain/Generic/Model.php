@@ -40,6 +40,7 @@ abstract class Model implements ModelInterface
      * @return $this
      *
      * @throws IdAlreadyAssignedException if attempting to re-assign $id
+     * @throws InvalidIdException if the $id is of the wrong type
      */
     public function assignId(ModelIdInterface $id)
     {
