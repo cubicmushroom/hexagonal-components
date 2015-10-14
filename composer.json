@@ -12,7 +12,8 @@
   "minimum-stability": "stable",
   "require"          : {
     "symfony/validator": "^2.7",
-    "league/event"     : "^2.1"
+    "league/event"     : "^2.1",
+    "psr/log": "^1.0"
   },
   "require-dev"      : {
     "phpspec/phpspec": "^2.3"
