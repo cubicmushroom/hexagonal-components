@@ -133,6 +133,28 @@ namespace spec\CubicMushroom\Hexagonal\Command {
         }
 
 
+        function it_should_log_any_exception_thrown_by_handle_method(
+            /** @noinspection PhpDocSignatureInspection */
+            ValidatorInterface $validator,
+            EmitterInterface $emitter,
+            LoggerInterface $logger
+        ) {
+            $command           = new TestCorrectCommand;
+            $expectedException = new \Exception('I am supposed to fail for this test');
+
+            $this->beConstructedThrough('createToFail', [$validator, $emitter, $logger]);
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->shouldThrow($expectedException)->during('handle', [$command]);
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $logger->error(
+                'Exception throw while handling '.TestCorrectCommand::class.' command... '.
+                $expectedException->getMessage()
+            )->shouldBeCalled();
+        }
+
+
         /**
          * @uses AbstractCommandHandler::handle()
          */
@@ -185,7 +207,7 @@ namespace CubicMushroom\Hexagonal\Command {
      * Test class used to test the functionality of the AbstractCommandHandler class
      *
      * IMPORTANT: Do not implement any methods in this class, other than the abstract ones from AbstractCommandHandler
-     *            The only excpetion to this is methods used to test the object's state under test
+     *            The only exception to this is methods used to test the object's state under test
      *
      * @package CubicMushroom\Hexagonal
      */
@@ -196,20 +218,27 @@ namespace CubicMushroom\Hexagonal\Command {
          *
          * @param ValidatorInterface $validator
          * @param EmitterInterface   $emitter
+         * @param LoggerInterface    $logger [optional]
          *
-         * @return self
+         * @return TestAbstractCommandHandler
          */
         public static function createToFail(
             ValidatorInterface $validator,
-            EmitterInterface $emitter
+            EmitterInterface $emitter,
+            LoggerInterface $logger = null
         ) {
             /** @var self $handler */
             $handler = parent::createBasic($validator, $emitter);
 
             $handler->shouldFail = true;
 
+            if ($logger) {
+                $handler->logger = $logger;
+            }
+
             return $handler;
         }
+
 
         /**
          * Custom builder used to inject logger service
@@ -268,7 +297,7 @@ namespace CubicMushroom\Hexagonal\Command {
             if ($this->shouldFail) {
                 throw new \Exception('I am supposed to fail for this test');
             }
-            
+
             $this->hasHandlerBeenCalled = true;
         }
 

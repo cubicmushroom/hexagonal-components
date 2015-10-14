@@ -80,8 +80,14 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
         try {
             $this->_handle($command);
         } catch (\Exception $exception) {
-            $failureEvent = $this->getFailureEvent($exception);
-            $this->emit($failureEvent);
+
+            // Log exception
+            $commandClass = get_class($command);
+            $this->logError("Exception throw while handling {$commandClass} command... {$exception->getMessage()}");
+
+            // Fire failure event
+            $this->emit($this->getFailureEvent($exception));
+
             throw $exception;
         }
 
