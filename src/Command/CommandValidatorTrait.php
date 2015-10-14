@@ -44,11 +44,12 @@ trait CommandValidatorTrait
     /**
      * Should log the given error to the error log
      *
-     * @param $errorMessage
+     * @param string     $errorMessage
+     * @param \Exception $exception
      *
      * @return void
      */
-    abstract function logError($errorMessage);
+    abstract function logError($errorMessage, \Exception $exception);
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -64,12 +65,16 @@ trait CommandValidatorTrait
     {
         $expectedCommandClass = $this->getCommandClass();
         if (!is_a($command, $expectedCommandClass, true)) {
-            $actualCommandClass = get_class($command);
-            $handlerClass = get_called_class();
-            $this->logError("{$handlerClass} cannot handle commands of type {$actualCommandClass}");
-            throw new InvalidCommandException(
+            $actualCommandClass      = get_class($command);
+            $handlerClass            = get_called_class();
+            $invalidCommandException = new InvalidCommandException(
                 "Command handler '$handlerClass' should only be registered to handle '$expectedCommandClass' commands"
             );
+            $this->logError(
+                "{$handlerClass} cannot handle commands of type {$actualCommandClass}",
+                $invalidCommandException
+            );
+            throw $invalidCommandException;
         }
     }
 

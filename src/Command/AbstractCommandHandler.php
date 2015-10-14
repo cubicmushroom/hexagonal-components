@@ -83,7 +83,10 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
 
             // Log exception
             $commandClass = get_class($command);
-            $this->logError("Exception throw while handling {$commandClass} command... {$exception->getMessage()}");
+            $this->logError(
+                "Exception throw while handling {$commandClass} command... {$exception->getMessage()}\n",
+                $exception
+            );
 
             // Fire failure event
             $this->emit($this->getFailureEvent($exception));
@@ -121,12 +124,13 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     /**
      * Logs an error, if the error logger is available
      *
-     * @param string $errorMessage
+     * @param string     $errorMessage
+     * @param \Exception $exception
      */
-    function logError($errorMessage)
+    function logError($errorMessage, \Exception $exception)
     {
         if ($this->logger instanceof LoggerInterface) {
-            $this->logger->error($errorMessage);
+            $this->logger->error($errorMessage . "\n" . $exception->getTraceAsString());
         }
     }
 

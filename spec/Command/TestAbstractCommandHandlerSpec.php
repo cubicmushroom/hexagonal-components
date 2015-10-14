@@ -149,8 +149,10 @@ namespace spec\CubicMushroom\Hexagonal\Command {
 
             /** @noinspection PhpUndefinedMethodInspection */
             $logger->error(
-                'Exception throw while handling '.TestCorrectCommand::class.' command... '.
-                $expectedException->getMessage()
+                Argument::containingString(
+                    'Exception throw while handling '.TestCorrectCommand::class.' command... '.
+                    $expectedException->getMessage()."\n"
+                )
             )->shouldBeCalled();
         }
 
