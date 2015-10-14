@@ -47,7 +47,7 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     /**
      * Use factory methods to create
      */
-    protected function __construct()
+    private function __construct()
     {
     }
 
