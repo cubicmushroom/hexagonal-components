@@ -23,7 +23,7 @@ namespace spec\CubicMushroom\Hexagonal\Command {
      *
      * @see     \CubicMushroom\Hexagonal\Command\AbstractCommandHandler
      */
-    class TestCommandHandlerSpec extends ObjectBehavior
+    class TestAbstractCommandHandlerSpec extends ObjectBehavior
     {
         /**
          * @uses AbstractCommandHandler::__construct()
