@@ -23,7 +23,7 @@ namespace spec\CubicMushroom\Hexagonal\Command {
      *
      * @see     \CubicMushroom\Hexagonal\Command\AbstractCommandHandler
      */
-    class TestAbstractCommandHandlerSpec extends ObjectBehavior
+    class TestCommandHandlerSpec extends ObjectBehavior
     {
         /**
          * @uses AbstractCommandHandler::__construct()
@@ -191,11 +191,11 @@ namespace CubicMushroom\Hexagonal\Command {
 
         /**
          *
-         * @param $command
+         * @param CommandInterface $command
          *
          * @throws \Exception
          */
-        protected function _handle($command)
+        protected function _handle(CommandInterface $command)
         {
             if ($this->shouldFail) {
                 throw new \Exception('I am supposed to fail for this test');
@@ -208,7 +208,7 @@ namespace CubicMushroom\Hexagonal\Command {
          *
          * @return CommandSucceededEventInterface
          */
-        protected function getSuccessEvent($command)
+        protected function getSuccessEvent(CommandInterface $command)
         {
             return new TestAbstractCommandHandlerSucceededEvent('TestAbstractCommandHandlerSuccess');
         }
