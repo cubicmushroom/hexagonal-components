@@ -5,6 +5,7 @@ namespace CubicMushroom\Hexagonal\Command;
 use CubicMushroom\Hexagonal\Event\CommandFailedEventInterface;
 use CubicMushroom\Hexagonal\Event\CommandSucceededEventInterface;
 use League\Event\EmitterInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -43,6 +44,17 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     // Properties
     // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * If set, will be used to log exceptions to
+     *
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Constructor
+    // -----------------------------------------------------------------------------------------------------------------
 
     /**
      * Use factory methods to create
@@ -98,4 +110,19 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
      * @return CommandFailedEventInterface
      */
     abstract protected function getFailureEvent(\Exception $exception);
+
+
+    /**
+     * Logs an error, if the error logger is available
+     *
+     * @param string $errorMessage
+     */
+    function logError($errorMessage)
+    {
+        if ($this->logger instanceof LoggerInterface) {
+            $this->logger->error($errorMessage);
+        }
+    }
+
+
 }

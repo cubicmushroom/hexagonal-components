@@ -41,6 +41,16 @@ trait CommandValidatorTrait
     abstract protected function getCommandClass();
 
 
+    /**
+     * Should log the given error to the error log
+     *
+     * @param $errorMessage
+     *
+     * @return void
+     */
+    abstract function logError($errorMessage);
+
+
     // -----------------------------------------------------------------------------------------------------------------
     // Command validations
     // -----------------------------------------------------------------------------------------------------------------
@@ -52,11 +62,13 @@ trait CommandValidatorTrait
      */
     protected function checkCommandType(CommandInterface $command)
     {
-        $commandClass = $this->getCommandClass();
-        if (!is_a($command, $commandClass, true)) {
-            $handlerClass = get_class($this);
+        $expectedCommandClass = $this->getCommandClass();
+        if (!is_a($command, $expectedCommandClass, true)) {
+            $actualCommandClass = get_class($command);
+            $handlerClass = get_called_class();
+            $this->logError("{$handlerClass} cannot handle commands of type {$actualCommandClass}");
             throw new InvalidCommandException(
-                "Command handler '$handlerClass' should only be registered to handle '$commandClass' commands"
+                "Command handler '$handlerClass' should only be registered to handle '$expectedCommandClass' commands"
             );
         }
     }

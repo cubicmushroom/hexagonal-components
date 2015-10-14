@@ -4,16 +4,16 @@ namespace spec\CubicMushroom\Hexagonal\Command {
 
     use CubicMushroom\Hexagonal\Command\AbstractCommandHandler;
     use CubicMushroom\Hexagonal\Command\CommandHandlerInterface;
-    use CubicMushroom\Hexagonal\Command\CommandInterface;
-    use CubicMushroom\Hexagonal\Command\TestCorrectCommand;
     use CubicMushroom\Hexagonal\Command\TestAbstractCommandHandler;
     use CubicMushroom\Hexagonal\Command\TestAbstractCommandHandlerFailedEvent;
     use CubicMushroom\Hexagonal\Command\TestAbstractCommandHandlerSucceededEvent;
+    use CubicMushroom\Hexagonal\Command\TestCorrectCommand;
     use CubicMushroom\Hexagonal\Command\TestIncorrectCommand;
     use CubicMushroom\Hexagonal\Exception\Command\InvalidCommandException;
     use League\Event\EmitterInterface;
     use PhpSpec\ObjectBehavior;
     use Prophecy\Argument;
+    use Psr\Log\LoggerInterface;
     use Symfony\Component\Validator\Validator\ValidatorInterface;
 
     /**
@@ -25,6 +25,9 @@ namespace spec\CubicMushroom\Hexagonal\Command {
      */
     class TestAbstractCommandHandlerSpec extends ObjectBehavior
     {
+        const TEST_CLASS = '\CubicMushroom\Hexagonal\Command\TestAbstractCommandHandler';
+
+
         /**
          * @uses AbstractCommandHandler::__construct()
          */
@@ -33,7 +36,7 @@ namespace spec\CubicMushroom\Hexagonal\Command {
             ValidatorInterface $validator,
             EmitterInterface $emitter
         ) {
-            $this->beConstructedThrough('createWithFailureFlag', [$validator, $emitter, false]);
+            $this->beConstructedThrough('createBasic', [$validator, $emitter]);
         }
 
 
@@ -61,7 +64,8 @@ namespace spec\CubicMushroom\Hexagonal\Command {
         /**
          * @uses AbstractCommandHandler::handle()
          */
-        function it_should_be_ok_with_its_own_command_type() {
+        function it_should_be_ok_with_its_own_command_type()
+        {
             /** @noinspection PhpUndefinedMethodInspection */
             $this->handle(new TestCorrectCommand);
         }
@@ -70,9 +74,30 @@ namespace spec\CubicMushroom\Hexagonal\Command {
         /**
          * @uses AbstractCommandHandler::handle()
          */
-        function it_should_throw_an_exception_for_any_other_command_type() {
+        function it_should_throw_an_exception_for_any_other_command_type()
+        {
             /** @noinspection PhpUndefinedMethodInspection */
             $this->shouldThrow(InvalidCommandException::class)->during('handle', [new TestIncorrectCommand]);
+        }
+
+
+        /**
+         * @uses AbstractCommandHandler::handle()
+         */
+        function it_should_log_incorrect_command_if_logger_available(
+            /** @noinspection PhpDocSignatureInspection */
+            ValidatorInterface $validator,
+            EmitterInterface $emitter,
+            LoggerInterface $logger
+        ) {
+            $this->beConstructedThrough('createWithLogger', [$validator, $emitter, $logger]);
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->shouldThrow(InvalidCommandException::class)->during('handle', [new TestIncorrectCommand]);
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $logger->error(Argument::containingString(ltrim(self::TEST_CLASS, '\\').' cannot handle commands of type '))
+                   ->shouldHaveBeenCalled();
         }
 
 
@@ -114,11 +139,11 @@ namespace spec\CubicMushroom\Hexagonal\Command {
          */
         function it_should_emit_an_event_on_failure(
             /** @noinspection PhpDocSignatureInspection */
-            CommandInterface $command,
+            TestCorrectCommand $command,
             ValidatorInterface $validator,
             EmitterInterface $emitter
         ) {
-            $this->beConstructedThrough('createWithFailureFlag', [$validator, $emitter, true]);
+            $this->beConstructedThrough('createToFail', [$validator, $emitter]);
 
             // This tests check that this thrown exception matches the one thrown in
             // \CubicMushroom\Hexagonal\Command\TestAbstractCommandHandler::_handle() below
@@ -138,6 +163,7 @@ namespace CubicMushroom\Hexagonal\Command {
     use CubicMushroom\Hexagonal\Event\CommandSucceededEventInterface;
     use League\Event\EmitterInterface;
     use League\Event\Event;
+    use Psr\Log\LoggerInterface;
     use Symfony\Component\Validator\Validator\ValidatorInterface;
 
     /**
@@ -149,24 +175,46 @@ namespace CubicMushroom\Hexagonal\Command {
      */
     class TestAbstractCommandHandler extends AbstractCommandHandler
     {
+
         /**
          * Custom builder used to pass in $shouldFail flag
          *
          * @param ValidatorInterface $validator
          * @param EmitterInterface   $emitter
-         * @param bool               $shouldFail
          *
          * @return self
          */
-        public static function createWithFailureFlag(
+        public static function createToFail(
             ValidatorInterface $validator,
-            EmitterInterface $emitter,
-            $shouldFail
+            EmitterInterface $emitter
         ) {
             /** @var self $handler */
             $handler = parent::createBasic($validator, $emitter);
 
-            $handler->shouldFail = $shouldFail;
+            $handler->shouldFail = true;
+
+            return $handler;
+        }
+
+
+        /**
+         * Custom builder used to inject logger service
+         *
+         * @param ValidatorInterface $validator
+         * @param EmitterInterface   $emitter
+         * @param LoggerInterface    $logger
+         *
+         * @return self
+         */
+        public static function createWithLogger(
+            ValidatorInterface $validator,
+            EmitterInterface $emitter,
+            LoggerInterface $logger
+        ) {
+            /** @var self $handler */
+            $handler = parent::createBasic($validator, $emitter);
+
+            $handler->logger = $logger;
 
             return $handler;
         }
