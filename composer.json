@@ -1,25 +1,25 @@
 {
-  "name"             : "cubicmushroom/hexagonal-components",
-  "description"      : "Useful elements for implementing hexagonal architecture",
-  "version"          : "0.0.0",
-  "type"             : "library",
-  "license"          : "ISC",
-  "authors"          : [
+  "name": "cubicmushroom/hexagonal-components",
+  "description": "Useful elements for implementing hexagonal architecture",
+  "version": "1.0.0",
+  "type": "library",
+  "license": "ISC",
+  "authors": [
     {
-      "name" : "Toby Griffiths",
+      "name": "Toby Griffiths",
       "email": "toby@cubicmushroom.co.uk"
     }
   ],
   "minimum-stability": "stable",
-  "require"          : {
+  "require": {
     "symfony/validator": "^2.7",
-    "league/event"     : "^2.1",
-    "psr/log"          : "^1.0"
+    "league/event": "^2.1",
+    "psr/log": "^1.0"
   },
-  "require-dev"      : {
+  "require-dev": {
     "phpspec/phpspec": "^2.3"
   },
-  "autoload"         : {
+  "autoload": {
     "psr-4": {
       "CubicMushroom\\Hexagonal\\": "src/"
     }
