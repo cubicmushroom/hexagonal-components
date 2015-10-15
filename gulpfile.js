@@ -9,4 +9,7 @@ var namespace = 'CubicMushroom\\Hexagonal\\';
  */
 phpspecTasks.addTasks(gulp, namespace);
 
+/**
+ * Versioning tasks
+ */
 versionTasks.addTasks();
