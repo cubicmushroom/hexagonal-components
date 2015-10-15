@@ -23,5 +23,16 @@
     "psr-4": {
       "CubicMushroom\\Hexagonal\\": "src/"
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "gulp test"
+    ],
+    "post-update-cmd": [
+      "gulp test"
+    ],
+    "pre-archive-cmd": [
+      "gulp test"
+    ]
   }
 }
