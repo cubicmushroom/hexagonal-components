@@ -78,6 +78,7 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
         $this->validateCommand($command);
 
         try {
+            // @todo - Update this to return the succes event object, rather than using the getSuccessEvent() method
             $this->_handle($command);
         } catch (\Exception $exception) {
 
