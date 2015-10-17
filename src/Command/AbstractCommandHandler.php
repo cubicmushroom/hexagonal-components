@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  *
  * @package CubicMushroom\Hexagonal
  *
- * @see     \spec\CubicMushroom\Hexagonal\Command\AbstractCommandHandlerSpec
+ * @see     \spec\CubicMushroom\Hexagonal\Command\TestAbstractCommandHandlerSpec
  */
 abstract class AbstractCommandHandler implements CommandHandlerInterface
 {
@@ -59,7 +59,7 @@ abstract class AbstractCommandHandler implements CommandHandlerInterface
     /**
      * Use factory methods to create
      */
-    private function __construct()
+    protected function __construct()
     {
     }
 

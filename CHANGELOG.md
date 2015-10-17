@@ -2,6 +2,29 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [Unreleased] - YYYY-MM-DD
+### Added
+- Type hint correction
+### Fixed
+- n/a
+### Changed
+- n/a
+### Removed
+- n/a
+
+
+## v1.0.2 - 2015-10-17
+### Added
+- Type hint correction
+### Fixed
+- n/a
+### Changed
+- n/a
+### Removed
+- n/a
+
+
 ## v1.0.1 - 2015-10-15
 ### Added
 - No functional changes - Just internal workings

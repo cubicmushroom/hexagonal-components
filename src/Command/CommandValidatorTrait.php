@@ -91,7 +91,9 @@ trait CommandValidatorTrait
         $this->checkCommandType($command);
 
         if (!$this->validator instanceof ValidatorInterface) {
-            throw new \RuntimeException('Validator is not available');
+            $validatorUnavailableException = new \RuntimeException('Validator is not available');
+            $this->logError('Validator service unavailable', $validatorUnavailableException);
+            throw $validatorUnavailableException;
         }
 
         $violationsList = $this->validator->validate($command);

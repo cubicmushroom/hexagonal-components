@@ -123,6 +123,26 @@ namespace spec\CubicMushroom\Hexagonal\Command {
 
 
         /**
+         * @see \CubicMushroom\Hexagonal\Command\CommandValidatorTrait::validateCommand()
+         */
+        function it_should_log_an_error_if_the_validator_is_not_available(
+            /** @noinspection PhpDocSignatureInspection */
+            EmitterInterface $emitter,
+            LoggerInterface $logger
+        ) {
+            $this->beConstructedThrough('createWithoutValidator', [$emitter, $logger]);
+
+            $command = new TestCorrectCommand;
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->shouldThrow()->during('handle', [$command]);
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $logger->error(Argument::containingString('Validator service unavailable'))->shouldHaveBeenCalled();
+        }
+
+
+        /**
          * @uses AbstractCommandHandler::handle()
          */
         function it_should_call_the_handle_method()
@@ -143,7 +163,7 @@ namespace spec\CubicMushroom\Hexagonal\Command {
             EmitterInterface $emitter,
             LoggerInterface $logger
         ) {
-            $command = new TestCorrectCommand;
+            $command           = new TestCorrectCommand;
             $expectedException = new \Exception('I am supposed to fail for this test');
 
             $this->beConstructedThrough('createToFail', [$validator, $emitter, $logger]);
@@ -264,6 +284,30 @@ namespace CubicMushroom\Hexagonal\Command {
             $handler = parent::createBasic($validator, $emitter);
 
             $handler->logger = $logger;
+
+            return $handler;
+        }
+
+
+        /**
+         * Custom builder used to bypass injecting validator service
+         *
+         * @param ValidatorInterface $validator
+         * @param EmitterInterface   $emitter
+         * @param LoggerInterface    $logger
+         *
+         * @return self
+         */
+        public static function createWithoutValidator(
+            EmitterInterface $emitter,
+            LoggerInterface $logger
+        ) {
+            /** @var self $handler */
+
+            $handler = new static();
+
+            $handler->emitter = $emitter;
+            $handler->logger  = $logger;
 
             return $handler;
         }
