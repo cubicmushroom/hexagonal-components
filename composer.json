@@ -34,5 +34,10 @@
     "pre-archive-cmd": [
       "gulp test"
     ]
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.x-dev"
+    }
   }
 }
