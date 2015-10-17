@@ -42,13 +42,13 @@ function inc(importance) {
 }
 
 module.exports.addTasks = function () {
-  gulp.task('release:patch', function () {
+  gulp.task('release:patch', ['test'], function () {
     return inc('patch');
   });
-  gulp.task('release:minor', function () {
+  gulp.task('release:minor', ['test'], function () {
     return inc('minor');
   });
-  gulp.task('release:major', function () {
+  gulp.task('release:major', ['test'], function () {
     return inc('major');
   });
 };
