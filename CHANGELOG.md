@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased] - YYYY-MM-DD
 ### Added
-- Type hint correction
+- Logging exceptions if validator is not available to validate command
 ### Fixed
 - n/a
 ### Changed
