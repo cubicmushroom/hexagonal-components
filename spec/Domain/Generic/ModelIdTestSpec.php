@@ -16,12 +16,13 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
      */
     class ModelIdTestSpec extends ObjectBehavior
     {
+        const ID = '123';
 
 
         function let()
         {
             /** @noinspection PhpMethodParametersCountMismatchInspection */
-            $this->beConstructedWith('123');
+            $this->beConstructedWith(self::ID);
         }
 
         function it_should_implement_model_id_interface()
@@ -34,6 +35,13 @@ namespace spec\CubicMushroom\Hexagonal\Domain\Generic {
         function it_should_not_be_possible_to_construct_without_a_value()
         {
             $this->shouldThrow(ErrorException::class)->during('__construct', []);
+        }
+
+
+        function it_should_be_convertable_to_a_string()
+        {
+            /** @noinspection PhpUndefinedMethodInspection */
+            $this->__toString()->shouldReturn(self::ID);
         }
     }
 }
