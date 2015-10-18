@@ -77,7 +77,7 @@ abstract class ModelId implements ModelIdInterface
                 throw new \RuntimeException(sprintf('Model class %s must implement ModelInterface', get_class($model)));
             }
 
-            return ($this->equals($model->getId()->getValue()));
+            return ($this->equals($model->id()->getValue()));
         }
 
         return ($this->getValue() === (string)$id);
@@ -95,4 +95,15 @@ abstract class ModelId implements ModelIdInterface
     {
         return $this->value;
     }
+
+
+    /**
+     * @return string
+     */
+    function __toString()
+    {
+        return (string) $this->getValue();
+    }
+
+
 }
