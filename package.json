@@ -1,6 +1,6 @@
 {
   "name": "hexagonal-components",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Useful elements for implementing hexagonal architecture",
   "main": "gulp.js",
   "scripts": {
