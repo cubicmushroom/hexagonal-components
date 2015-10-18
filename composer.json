@@ -1,7 +1,7 @@
 {
   "name": "cubicmushroom/hexagonal-components",
   "description": "Useful elements for implementing hexagonal architecture",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "library",
   "license": "ISC",
   "authors": [
