@@ -2,44 +2,15 @@
 
 namespace CubicMushroom\Hexagonal\Domain\User;
 
+use CubicMushroom\Hexagonal\Domain\Generic\ModelId;
+
 /**
  * UserId Value Object
  *
  * @package CubicMushroom\Hexagonal
  */
-class UserId
+class UserId extends ModelId
 {
-    // -----------------------------------------------------------------------------------------------------------------
-    // Properties
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * @var mixed
-     */
-    protected $id;
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // Constructor
-    // -----------------------------------------------------------------------------------------------------------------
-
-    /**
-     * UserId constructor.
-     *
-     * @param $id
-     *
-     * @throws \InvalidArgumentException if $id is empty
-     */
-    public function __construct($id)
-    {
-        if (empty($id)) {
-            throw new \InvalidArgumentException('"$id" is empty');
-        }
-
-        $this->id = $id;
-    }
-
-
     // -----------------------------------------------------------------------------------------------------------------
     // Getters and Setters
     // -----------------------------------------------------------------------------------------------------------------
@@ -49,6 +20,6 @@ class UserId
      */
     public function getId()
     {
-        return $this->id;
+        return $this->getValue();
     }
 }
