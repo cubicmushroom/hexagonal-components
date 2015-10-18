@@ -3,10 +3,21 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## v1.0.4 - 2015-10-18
+### Added
+- UserId extends ModelId
+### Fixed
+- n/a
+### Changed
+- n/a
+### Removed
+- n/a
+
+
 ## v1.0.3 - 2015-10-18
 ### Added
 - Logging exceptions if validator is not available to validate command
-- ModelID/UserId can be converted to string
+- ModelID can be converted to string
 ### Fixed
 - n/a
 ### Changed
