@@ -21,7 +21,7 @@ use CubicMushroom\Hexagonal\Exception\Domain\Generic\InvalidIdException;
 abstract class Model implements ModelInterface
 {
     /**
-     * @var ModelId
+     * @var mixed
      */
     protected $id;
 
@@ -30,7 +30,9 @@ abstract class Model implements ModelInterface
      */
     public function id()
     {
-        return $this->id;
+        $class = $this->getIdClass();
+
+        return $class($this->id);
     }
 
 
@@ -55,7 +57,7 @@ abstract class Model implements ModelInterface
         }
 
 
-        $this->id = $id;
+        $this->id = $id->getValue();
 
         return $this;
     }
