@@ -47,7 +47,7 @@ abstract class Model implements ModelInterface
     public function assignId(ModelIdInterface $id)
     {
         if (isset($this->id)) {
-            throw new IdAlreadyAssignedException("\$id of value {$this->id->getValue()} already assigned");
+            throw new IdAlreadyAssignedException("\$id of value {$this->id} already assigned");
         }
 
         $idClass = $this->getIdClass();
