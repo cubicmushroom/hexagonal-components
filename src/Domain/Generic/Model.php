@@ -32,7 +32,7 @@ abstract class Model implements ModelInterface
     {
         $class = $this->getIdClass();
 
-        return $class($this->id);
+        return new $class($this->id);
     }
 
 
