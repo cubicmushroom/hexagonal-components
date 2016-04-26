@@ -2,7 +2,7 @@
   "name": "hexagonal-components",
   "version": "1.0.4",
   "description": "Useful elements for implementing hexagonal architecture",
-  "main": "gulp.js",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "gulp test"
   },
