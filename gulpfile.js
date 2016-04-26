@@ -1,6 +1,5 @@
-var gulp         = require('gulp'),
-    phpspecTasks = require('gulp-cm-phpspec-tasks'),
-    versionTasks = require('./gulp/version-tasks');
+var gulp = require('./gulp/loader')(['release']),
+    phpspecTasks = require('gulp-cm-phpspec-tasks');
 
 var namespace = 'CubicMushroom\\Hexagonal\\';
 
@@ -18,12 +17,3 @@ phpspecTasks.addTasks(gulp, namespace);
  * Runs all the test suites
  */
 gulp.task('test', ['phpspec']);
-
-
-// -----------------------------------------------------------------------------------------------------------------
-// Versioned release tasks
-// -----------------------------------------------------------------------------------------------------------------
-/**
- * Versioning tasks
- */
-versionTasks.addTasks();
